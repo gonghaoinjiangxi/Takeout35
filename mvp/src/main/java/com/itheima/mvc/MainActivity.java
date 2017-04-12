@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
     // 业务代码：
     // 界面业务
@@ -16,15 +18,21 @@ public class MainActivity extends AppCompatActivity {
     private EditText mUsername;
     private EditText mPassword;
     private ProgressDialog dialog;
-    private MainActivityPresenter mMainActivityPresenter;
+
+    @Inject
+    MainActivityPresenter mMainActivityPresenter;
+//    public static MainActivity mMainActivity;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        mMainActivity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //解耦：1.静态方法（单例getInstance） 2.工厂生产 3.依赖注入（配置文件 + 反射）4.使用Dagger2（基于注解的依赖注入）
-        mMainActivityPresenter = new MainActivityPresenter(this);
+//        mMainActivityPresenter = new MainActivityPresenter(this);
+        DaggerMainActivityComponent.builder().mainActivityModule(new MainActivityModule(this)).build().in(this);
+        //保存presenter对象到集合中
 
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
