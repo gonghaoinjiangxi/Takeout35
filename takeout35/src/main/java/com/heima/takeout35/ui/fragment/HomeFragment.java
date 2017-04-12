@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.heima.takeout35.R;
+import com.heima.takeout35.model.net.Seller;
+import com.heima.takeout35.presenter.HomeFragmentPresenter;
 import com.heima.takeout35.ui.adapter.HomeRvAdapter;
 
 import java.util.ArrayList;
@@ -36,14 +38,16 @@ public class HomeFragment extends Fragment {
     LinearLayout mLlTitleSearch;
     @InjectView(R.id.ll_title_container)
     LinearLayout mLlTitleContainer;
-    private HomeRvAdapter mHomeRvAdapter;
+    public HomeRvAdapter mHomeRvAdapter;
     private ArgbEvaluator mEvaluator;
+    private HomeFragmentPresenter mHomeFragmentPresenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = View.inflate(getContext(), R.layout.fragment_home, null);
         ButterKnife.inject(this, rootView);
+        mHomeFragmentPresenter = new HomeFragmentPresenter(this);
         mEvaluator = new ArgbEvaluator();
         initRecycleView();
         return rootView;
@@ -67,7 +71,10 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //填充模拟数据
-        testData();
+//        testData();
+        //TODO:使用业务类去请求数据
+        mHomeFragmentPresenter.loadHomeInfo();
+
         mHomeRvAdapter.setDatas(mNearby, mOther);
         //有数据后可以监听列表滚动事件
         mRvHome.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -93,15 +100,15 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private List<String> mNearby = new ArrayList<>();
-    private List<String> mOther = new ArrayList<>();
+    private List<Seller> mNearby = new ArrayList<>();
+    private List<Seller> mOther = new ArrayList<>();
     private void testData() {
-        for(int i=0;i<7;i++){
-            mNearby.add("我是附近商家：" + i);
-        }
-        for(int i=0;i<25;i++){
-            mOther.add("我是其他商家：" + i);
-        }
+//        for(int i=0;i<7;i++){
+//            mNearby.add("我是附近商家：" + i);
+//        }
+//        for(int i=0;i<80;i++){
+//            mOther.add("我是其他商家：" + i);
+//        }
     }
 
     @Override
