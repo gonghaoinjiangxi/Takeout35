@@ -18,9 +18,9 @@ public interface TakeoutService {
     @GET(Constants.HOME)
     Call<ResponseInfo> getHomeInfo();
 
-//    @GET("users/{user}/repos")
-//    Call<List<Repo>> listOrder(@Path("user") String user);
-//
+    @GET(Constants.ORDER)
+    Call<ResponseInfo> getOrderList(@Query("userId") String userId);
+
 
     //登录
     @GET(Constants.LOGIN)

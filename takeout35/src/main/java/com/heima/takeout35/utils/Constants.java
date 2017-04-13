@@ -8,4 +8,5 @@ public class Constants {
     public static final String HOST =  "http://192.168.30.82:8080/TakeoutService/";
     public static final String HOME = HOST + "home";
     public static final String LOGIN = HOST + "login";
+    public static final String ORDER = HOST + "order";
 }

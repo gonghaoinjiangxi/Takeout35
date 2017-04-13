@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.heima.takeout35.R;
 import com.heima.takeout35.presenter.LoginActivityPresenter;
@@ -116,6 +117,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     int time = 60;
+
+    public void afterLogin(boolean isLoginOk) {
+        if(isLoginOk){
+            //关闭页面
+            finish();
+
+        }else{
+            Toast.makeText(this, "请仔细检查验证码", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private class CutdownTask implements Runnable{
         @Override
         public void run() {
