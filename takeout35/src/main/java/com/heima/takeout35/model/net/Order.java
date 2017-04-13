@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 订单数据封装
  */
-public class Order {
+public class Order{
     private String id;
     private String type;
     private Seller seller;
