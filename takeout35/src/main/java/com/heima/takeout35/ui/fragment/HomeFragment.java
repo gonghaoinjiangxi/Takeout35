@@ -14,12 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.heima.takeout35.R;
+import com.heima.takeout35.dagger2.component.DaggerHomeFragmentComponent;
+import com.heima.takeout35.dagger2.module.HomeFragmentModule;
 import com.heima.takeout35.model.net.Seller;
 import com.heima.takeout35.presenter.HomeFragmentPresenter;
 import com.heima.takeout35.ui.adapter.HomeRvAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -40,14 +44,18 @@ public class HomeFragment extends Fragment {
     LinearLayout mLlTitleContainer;
     public HomeRvAdapter mHomeRvAdapter;
     private ArgbEvaluator mEvaluator;
-    private HomeFragmentPresenter mHomeFragmentPresenter;
+
+    @Inject
+    HomeFragmentPresenter mHomeFragmentPresenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = View.inflate(getContext(), R.layout.fragment_home, null);
         ButterKnife.inject(this, rootView);
-        mHomeFragmentPresenter = new HomeFragmentPresenter(this);
+//        mHomeFragmentPresenter = new HomeFragmentPresenter(this);
+        DaggerHomeFragmentComponent.builder().homeFragmentModule(new HomeFragmentModule(this)).build().in(this);
+
         mEvaluator = new ArgbEvaluator();
         initRecycleView();
         return rootView;

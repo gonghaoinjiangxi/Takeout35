@@ -13,7 +13,7 @@ public interface TakeoutService {
 //    @GET("users/{user}/repos")
 //    Call<List<Repo>> listRepos(@Path("user") String user);
 
-
+    //首页
     @GET(Constants.HOME)
     Call<ResponseInfo> getHomeInfo();
 
