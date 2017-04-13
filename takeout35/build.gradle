@@ -46,4 +46,5 @@ dependencies {
     compile files('libs/MobCommons-2016.0714.1402.jar')
     compile files('libs/MobTools-2016.0714.1402.jar')
     compile name:'SMSSDK-2.1.1',ext:'aar'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
 }

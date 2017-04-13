@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                     //2.提交验证码成功
                     Log.e("sms","提交验证码成功");
                     //TODO:登录自己的服务器，完成登录业务
-                    mLoginActivityPresenter.loginByPhone(mPhone, -2);
+//                    mLoginActivityPresenter.loginByPhone(mPhone, -2);
 
                 }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
                     //1.获取验证码成功
@@ -106,10 +106,11 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.login:
                 //2.提交验证码
-                if(SMSUtil.judgePhoneNums(LoginActivity.this, mPhone)) {
-                    String code = mEtUserCode.getText().toString().trim();
-                    SMSSDK.submitVerificationCode("86", mPhone, code);
-                }
+//                if(SMSUtil.judgePhoneNums(LoginActivity.this, mPhone)) {
+//                    String code = mEtUserCode.getText().toString().trim();
+//                    SMSSDK.submitVerificationCode("86", mPhone, code);
+//                }
+                mLoginActivityPresenter.loginByPhone(mPhone, -2);
                 break;
         }
     }
