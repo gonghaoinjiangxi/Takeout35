@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.inject(this);
         mLoginActivityPresenter = new LoginActivityPresenter(this);
 
-        SMSSDK.initSDK(this, "181c39656a7ae", "29eea8ebe615953942de64e153c4df34");  //短信验证
+        SMSSDK.initSDK(this, "1cfd8fdbf1d00", "f35256dbe2e17fa453af8738b3d6534f");  //短信验证
 
         SMSSDK.registerEventHandler(mEventHandler); //注册短信回调
     }

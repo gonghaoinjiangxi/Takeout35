@@ -79,7 +79,6 @@ public class HomeRvAdapter extends RecyclerView.Adapter {
                 itemView = View.inflate(mContext, R.layout.item_title, null);
                 TitleHolder titleHolder = new TitleHolder(itemView);
                 return titleHolder;
-
             case TYPE_DIVISION:
                 itemView = View.inflate(mContext, R.layout.item_division, null);
                 DivisionHolder divisionHolder = new DivisionHolder(itemView);
