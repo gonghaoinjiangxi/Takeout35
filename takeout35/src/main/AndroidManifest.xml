@@ -173,6 +173,7 @@
         <meta-data android:name="JPUSH_APPKEY" android:value="22aee046d2d27e81f591fe55"/>
 
         <activity android:name=".ui.activity.OrderDetailActivity"/>
+        <activity android:name=".ui.activity.BusinessActivity"/>
     </application>
 
 </manifest>

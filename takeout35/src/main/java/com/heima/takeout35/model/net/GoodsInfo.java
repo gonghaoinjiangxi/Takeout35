@@ -3,7 +3,7 @@ package com.heima.takeout35.model.net;
 import java.io.Serializable;
 
 /**
- * Created by Apple on 2016/9/2.
+ * 馒头
  */
 public class GoodsInfo implements Serializable{
     private boolean bargainPrice;

@@ -9,4 +9,6 @@ public class Constants {
     public static final String HOME = HOST + "home";
     public static final String LOGIN = HOST + "login";
     public static final String ORDER = HOST + "order";
+    public static final String BUSINESS = "business";
+
 }

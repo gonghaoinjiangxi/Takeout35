@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import cn.jpush.android.api.JPushInterface;
 
 /**
- * Created by lidongzhi on 2017/4/13.
+ * 班长
  */
 
 public class MyReceiver extends BroadcastReceiver {
@@ -45,6 +46,9 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
     private HashMap<String,String> processExtra(String extras) {
+        if(TextUtils.isEmpty(extras)){
+            return null;
+        }
         try {
             JSONObject jsonObject = new JSONObject(extras);
             String orderId = jsonObject.getString("orderId");

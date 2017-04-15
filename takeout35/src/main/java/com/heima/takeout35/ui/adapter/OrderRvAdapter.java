@@ -34,7 +34,6 @@ public class OrderRvAdapter extends RecyclerView.Adapter implements Observer {
     public void update(Observable observable, Object data) {
         //看到黑板后信息的反应
         Log.e("jpush", "观察者收到新的消息。。。。");
-
         HashMap<String,String> map = (HashMap<String, String>) data;
         String pushOrderId = map.get("orderId");
         String pushType = map.get("type");

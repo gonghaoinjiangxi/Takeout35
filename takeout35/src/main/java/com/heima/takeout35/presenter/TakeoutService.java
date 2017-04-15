@@ -25,4 +25,8 @@ public interface TakeoutService {
     //登录
     @GET(Constants.LOGIN)
     Call<ResponseInfo> loginByPhone(@Query("phone") String phone, @Query("type") int type);
+
+    //商品详情页
+    @GET(Constants.BUSINESS)
+    Call<ResponseInfo> getBusinessInfo(@Query("sellerId") int sellerId);
 }
