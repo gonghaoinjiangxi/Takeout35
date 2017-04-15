@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.heima.takeout35.R;
 import com.heima.takeout35.ui.activity.LoginActivity;
+import com.heima.takeout35.utils.TakeoutApp;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -47,6 +48,28 @@ public class UserFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //登录成功后更新Ui
+        int userId = TakeoutApp.sUser.getId();
+        if(userId!=-1){
+            mLogin.setVisibility(View.GONE);
+            mLlUserinfo.setVisibility(View.VISIBLE);
+            //展示用户名和电话号码
+            mUsername.setText("欢迎你，" + TakeoutApp.sUser.getName());
+            mPhone.setText(TakeoutApp.sUser.getPhone());
+        }else{
+            mLogin.setVisibility(View.VISIBLE);
+            mLlUserinfo.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onDestroyView() {

@@ -18,11 +18,15 @@ public interface TakeoutService {
     @GET(Constants.HOME)
     Call<ResponseInfo> getHomeInfo();
 
-//    @GET("users/{user}/repos")
-//    Call<List<Repo>> listOrder(@Path("user") String user);
-//
+    @GET(Constants.ORDER)
+    Call<ResponseInfo> getOrderList(@Query("userId") String userId);
+
 
     //登录
     @GET(Constants.LOGIN)
     Call<ResponseInfo> loginByPhone(@Query("phone") String phone, @Query("type") int type);
+
+    //商品详情页
+    @GET(Constants.BUSINESS)
+    Call<ResponseInfo> getBusinessInfo(@Query("sellerId") int sellerId);
 }

@@ -1,6 +1,7 @@
 package com.heima.takeout35.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.heima.takeout35.R;
 import com.heima.takeout35.model.net.Seller;
+import com.heima.takeout35.ui.activity.BusinessActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -215,13 +217,24 @@ public class HomeRvAdapter extends RecyclerView.Adapter {
         TextView mTvHomeSendPrice;
         @InjectView(R.id.tv_home_distance)
         TextView mTvHomeDistance;
+        private Seller mSeller;
 
         SellerHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, BusinessActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("seller", mSeller);
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         public void setData(Seller seller) {
+            this.mSeller = seller;
             Picasso.with(mContext).load(seller.getIcon()).into(mSellerLogo);
             mTvTitle.setText(seller.getName());
             mRatingBar.setRating(Float.parseFloat(seller.getScore()));

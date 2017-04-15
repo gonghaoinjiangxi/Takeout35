@@ -52,6 +52,11 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.6'
     compile files('libs/MobCommons-2016.0714.1402.jar')
     compile files('libs/MobTools-2016.0714.1402.jar')
-    compile name:'SMSSDK-2.1.1',ext:'aar'
+    compile name: 'SMSSDK-2.1.1', ext: 'aar'
     compile 'com.j256.ormlite:ormlite-android:5.0'
+    compile files('libs/jpush-android-2.2.0.jar')
+
+    compile 'com.flipboard:bottomsheet-commons:1.5.1'
+    compile 'com.flipboard:bottomsheet-core:1.5.1'
+    compile 'se.emilsjolander:stickylistheaders:2.7.0'
 }

@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.heima.takeout35.model.net.User;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by lidongzhi on 2017/4/13.
  */
@@ -20,6 +22,7 @@ public class TakeoutApp extends Application {
         sUser = new User();
         sUser.setId(-1); //空用户，未登录
 
-
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 }
