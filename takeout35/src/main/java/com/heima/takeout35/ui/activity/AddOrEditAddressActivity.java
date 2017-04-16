@@ -138,6 +138,14 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
         if(getIntent()!=null){
             mAddress = (RecepitAddress) getIntent().getSerializableExtra("address");
             if(mAddress!=null){
+                //展示删除按钮
+                mIbDelete.setVisibility(View.VISIBLE);
+                mIbDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteAddress();
+                    }
+                });
                 //修改地址
                 mTvTitle.setText("修改地址");
                 mEtName.setText(mAddress.getName());
@@ -155,6 +163,31 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void deleteAddress() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("确认删除这个地址么？");
+        builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                boolean isOk = mAddressDao.deleteAddress(mAddress);
+                if(isOk){
+                    Toast.makeText(AddOrEditAddressActivity.this, "删除地址成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(AddOrEditAddressActivity.this, "删除地址失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("不，保留", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
 
     @OnClick({R.id.ib_back, R.id.ib_delete, R.id.ib_delete_phone, R.id.ib_add_phone_other, R.id.ib_delete_phone_other, R.id.ib_select_label, R.id.bt_ok})
     public void onClick(View view) {
@@ -183,10 +216,42 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
                 //线校验数据
                 boolean isOk = checkReceiptAddressInfo();
                 if(isOk){
-                    insertAddress();
-
+                    if(mAddress!=null){
+                        updateAddress();
+                    }else{
+                        insertAddress();
+                    }
                 }
                 break;
+        }
+    }
+
+    private void updateAddress() {
+        //更新
+        String name = mEtName.getText().toString().trim();
+        String sex = "女士";
+        if(mRbMan.isChecked()){
+            sex ="先生";
+        }
+        String phone = mEtPhone.getText().toString().trim();
+        String phoneOther = mEtPhoneOther.getText().toString().trim();
+        String address = mEtReceiptAddress.getText().toString().trim();
+        String detailAddress = mEtDetailAddress.getText().toString().trim();
+        String label = mTvLabel.getText().toString().trim();
+        //把新的数据set到mAddressBean里
+        mAddress.setName(name);
+        mAddress.setSex(sex);
+        mAddress.setPhone(phone);
+        mAddress.setPhoneOther(phoneOther);
+        mAddress.setAddress(address);
+        mAddress.setDetailAddress(detailAddress);
+        mAddress.setLabel(label);
+        boolean isUpdateSuccess = mAddressDao.updateAddress(mAddress);
+        if(isUpdateSuccess){
+            finish();
+            Toast.makeText(this, "更新地址成功", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "更新地址失败", Toast.LENGTH_SHORT).show();
         }
     }
 
