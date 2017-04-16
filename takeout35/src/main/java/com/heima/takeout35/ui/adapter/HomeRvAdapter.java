@@ -15,6 +15,7 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.heima.takeout35.R;
 import com.heima.takeout35.model.net.Seller;
 import com.heima.takeout35.ui.activity.BusinessActivity;
+import com.heima.takeout35.utils.TakeoutApp;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -226,7 +227,15 @@ public class HomeRvAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, BusinessActivity.class);
+                    //跳转之前，先查看之前是否有点餐记录
+                    int allcount = TakeoutApp.sInstance.queryCacheSelectedInfoBySellerId((int) mSeller.getId());
+                    boolean hasCacheSelectInfo = false;
+                    if(allcount > 0){
+                        //点过餐
+                        hasCacheSelectInfo = true;
+                    }
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("hasCacheSelectInfo", hasCacheSelectInfo);
                     intent.putExtra("seller", mSeller);
                     mContext.startActivity(intent);
                 }

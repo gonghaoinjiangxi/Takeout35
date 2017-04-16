@@ -4,12 +4,19 @@ package com.heima.takeout35.model.dao;
  * 点餐的记录
  */
 
-public class CacheSelectInfo {
+public class CacheSelectedInfo {
 
     private int sellerId; //田老师红烧肉
     private int typeId;  //粗粮主食
     private int goodsId; //馒头
     private int count; //几个馒头
+
+    public CacheSelectedInfo(int sellerId, int typeId, int goodsId, int count) {
+        this.sellerId = sellerId;
+        this.typeId = typeId;
+        this.goodsId = goodsId;
+        this.count = count;
+    }
 
     public int getSellerId() {
         return sellerId;

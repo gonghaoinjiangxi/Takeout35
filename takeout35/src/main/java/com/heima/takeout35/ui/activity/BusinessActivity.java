@@ -30,6 +30,7 @@ import com.heima.takeout35.ui.fragment.CommentsFragment;
 import com.heima.takeout35.ui.fragment.GoodsFragment;
 import com.heima.takeout35.ui.fragment.SellerFragment;
 import com.heima.takeout35.utils.PriceFormater;
+import com.heima.takeout35.utils.TakeoutApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,7 @@ public class BusinessActivity extends AppCompatActivity {
     private View bottomSheetView;
     private RecyclerView mRvCart;
     private CartRvAdapter mCartRvAdapter;
+    public boolean mHasCacheSelectInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class BusinessActivity extends AppCompatActivity {
             mSeller = (Seller) getIntent().getSerializableExtra("seller");
             mTvDeliveryFee.setText("另需配送费￥" + mSeller.getDeliveryFee());
             mTvSendPrice.setText("￥" + mSeller.getSendPrice() + "元起送");
+            mHasCacheSelectInfo = getIntent().getBooleanExtra("hasCacheSelectInfo", false);
         }
     }
 
@@ -206,6 +209,9 @@ public class BusinessActivity extends AppCompatActivity {
 
                 //关闭购物车
                 showOrCloseCart();
+
+                //清空所有缓存
+                TakeoutApp.sInstance.clearCacheSelectedInfo((int) mSeller.getId());
             }
         });
         builder.setNegativeButton("不，还要吃", new DialogInterface.OnClickListener() {

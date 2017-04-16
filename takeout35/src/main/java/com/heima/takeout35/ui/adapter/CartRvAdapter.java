@@ -14,6 +14,8 @@ import com.heima.takeout35.model.net.GoodsInfo;
 import com.heima.takeout35.model.net.GoodsTypeInfo;
 import com.heima.takeout35.ui.activity.BusinessActivity;
 import com.heima.takeout35.ui.fragment.GoodsFragment;
+import com.heima.takeout35.utils.Constants;
+import com.heima.takeout35.utils.TakeoutApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +117,10 @@ public class CartRvAdapter extends RecyclerView.Adapter {
                     //关闭购物车
                     mActivity.showOrCloseCart();
                 }
+                //删除缓存
+                TakeoutApp.sInstance.deleteCacheSelectedInfo(mGoodsInfo.getId());
+            }else{
+                TakeoutApp.sInstance.updateCacheSelectedInfo(mGoodsInfo.getId(), Constants.MINUS);
             }
             mGoodsInfo.setCount(count); //已经在此行更改了数据
             notifyDataSetChanged();
@@ -126,6 +132,9 @@ public class CartRvAdapter extends RecyclerView.Adapter {
                 count++;
                 mGoodsInfo.setCount(count); //已经在此行更改了数据
                 notifyDataSetChanged();
+
+            //5.购物车中数量至少为1，所以增加的时候都是更新
+            TakeoutApp.sInstance.updateCacheSelectedInfo(mGoodsInfo.getId(), Constants.ADD);
         }
 
         private void processRedDot(boolean isAdd) {
