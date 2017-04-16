@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 setEnable(true, child);
             }
         }
-
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, mFragmentList.get(index)).commit();
     }
 
