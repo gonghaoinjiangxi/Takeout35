@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.heima.takeout35.R;
+import com.heima.takeout35.model.dao.AddressDao;
+import com.heima.takeout35.model.dao.RecepitAddress;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,7 +31,7 @@ import butterknife.OnClick;
 /**
  * Created by lidongzhi on 2017/4/16.
  */
-public class AddAddressActivity extends AppCompatActivity {
+public class AddOrEditAddressActivity extends AppCompatActivity {
     @InjectView(R.id.ib_back)
     ImageButton mIbBack;
     @InjectView(R.id.tv_title)
@@ -68,12 +70,16 @@ public class AddAddressActivity extends AppCompatActivity {
     ImageView mIbSelectLabel;
     @InjectView(R.id.bt_ok)
     Button mBtOk;
+    private AddressDao mAddressDao;
+    private RecepitAddress mAddress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_receipt_address);
         ButterKnife.inject(this);
+        processIntent();
+        mAddressDao = new AddressDao(this);
 
         mEtPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -128,6 +134,28 @@ public class AddAddressActivity extends AppCompatActivity {
         });
     }
 
+    private void processIntent() {
+        if(getIntent()!=null){
+            mAddress = (RecepitAddress) getIntent().getSerializableExtra("address");
+            if(mAddress!=null){
+                //修改地址
+                mTvTitle.setText("修改地址");
+                mEtName.setText(mAddress.getName());
+                String sex = mAddress.getSex();
+                if("先生".equals(sex)){
+                    mRbMan.setChecked(true);
+                }else{
+                    mRbWomen.setChecked(true);
+                }
+                mEtPhone.setText(mAddress.getPhone());
+                mEtPhoneOther.setText(mAddress.getPhoneOther());
+                mEtReceiptAddress.setText(mAddress.getAddress());
+                mEtDetailAddress.setText(mAddress.getDetailAddress());
+                mTvLabel.setText(mAddress.getLabel());
+            }
+        }
+    }
+
     @OnClick({R.id.ib_back, R.id.ib_delete, R.id.ib_delete_phone, R.id.ib_add_phone_other, R.id.ib_delete_phone_other, R.id.ib_select_label, R.id.bt_ok})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -155,11 +183,32 @@ public class AddAddressActivity extends AppCompatActivity {
                 //线校验数据
                 boolean isOk = checkReceiptAddressInfo();
                 if(isOk){
-                    //保存当前收货地址，sqlite
-
+                    insertAddress();
 
                 }
                 break;
+        }
+    }
+
+    private void insertAddress() {
+        //保存当前收货地址，sqlite
+        String name = mEtName.getText().toString().trim();
+        String sex = "女士";
+        if(mRbMan.isChecked()){
+            sex ="先生";
+        }
+        String phone = mEtPhone.getText().toString().trim();
+        String phoneOther = mEtPhoneOther.getText().toString().trim();
+        String address = mEtReceiptAddress.getText().toString().trim();
+        String detailAddress = mEtDetailAddress.getText().toString().trim();
+        String label = mTvLabel.getText().toString().trim();
+        RecepitAddress recepitAddress = new RecepitAddress(999,name,sex,phone,phoneOther,address,detailAddress,label,"35");
+        boolean isInsertSuccess = mAddressDao.insertAddress(recepitAddress);
+        if(isInsertSuccess){
+            finish();
+            Toast.makeText(this, "新增地址成功", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "新增地址失败", Toast.LENGTH_SHORT).show();
         }
     }
 

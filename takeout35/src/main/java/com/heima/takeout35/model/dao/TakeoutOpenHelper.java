@@ -16,10 +16,11 @@ import java.sql.SQLException;
  *   1.2  地图功能  1
  *   。。。
  *   1.7  地址功能  2
+ *   1.8  订单功能  3
  */
 
 public class TakeoutOpenHelper extends OrmLiteSqliteOpenHelper {
-    
+
     public TakeoutOpenHelper(Context context) {
         super(context, "takeout35.db", null, 2);
     }
@@ -37,12 +38,11 @@ public class TakeoutOpenHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        //更新旧表的字段，增加新的表 adb install -r覆盖安装
+        //更新旧表的字段，增加新的表 adb install -r ss覆盖安装
         try {
             TableUtils.createTable(connectionSource, RecepitAddress.class);  //针对老用户升级
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //创建收藏表
     }
 }

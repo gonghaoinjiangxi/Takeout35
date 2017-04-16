@@ -3,11 +3,13 @@ package com.heima.takeout35.model.dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * 地址表
  */
 @DatabaseTable(tableName = "t_address")
-public class RecepitAddress {
+public class RecepitAddress implements Serializable{
 
     @DatabaseField(generatedId = true)  //自动增长
     private int id;
@@ -32,6 +34,21 @@ public class RecepitAddress {
     //多个地址对应用户
     @DatabaseField(columnName = "userId")
     private String userId;
+
+    public RecepitAddress() {
+    }
+
+    public RecepitAddress(int id, String name, String sex, String phone, String phoneOther, String address, String detailAddress, String label, String userId) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+        this.phone = phone;
+        this.phoneOther = phoneOther;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.label = label;
+        this.userId = userId;
+    }
 
     public String getUserId() {
         return userId;
