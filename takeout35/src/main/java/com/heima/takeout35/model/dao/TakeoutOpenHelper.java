@@ -15,17 +15,14 @@ import java.sql.SQLException;
  *   1.1  支付功能  1
  *   1.2  地图功能  1
  *   。。。
- *   1.7  收藏功能  2
+ *   1.7  地址功能  2
+ *   1.8  订单功能  3
  */
 
 public class TakeoutOpenHelper extends OrmLiteSqliteOpenHelper {
 
-    //数据库版本问题1，与app版本的对应关系
-
-
-
     public TakeoutOpenHelper(Context context) {
-        super(context, "takeout35.db", null, 1);
+        super(context, "takeout35.db", null, 2);
     }
 
     @Override
@@ -33,6 +30,7 @@ public class TakeoutOpenHelper extends OrmLiteSqliteOpenHelper {
         //创建数据库的时候需要创建表
         try {
             TableUtils.createTable(connectionSource, User.class);
+            TableUtils.createTable(connectionSource, RecepitAddress.class);  //针对新用户有效
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,8 +38,11 @@ public class TakeoutOpenHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        //更新旧表的字段，增加新的表
-
-        //创建收藏表
+        //更新旧表的字段，增加新的表 adb install -r ss覆盖安装
+        try {
+            TableUtils.createTable(connectionSource, RecepitAddress.class);  //针对老用户升级
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
