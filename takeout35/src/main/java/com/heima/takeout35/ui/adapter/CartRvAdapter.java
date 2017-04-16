@@ -11,8 +11,11 @@ import android.widget.TextView;
 
 import com.heima.takeout35.R;
 import com.heima.takeout35.model.net.GoodsInfo;
+import com.heima.takeout35.model.net.GoodsTypeInfo;
 import com.heima.takeout35.ui.activity.BusinessActivity;
 import com.heima.takeout35.ui.fragment.GoodsFragment;
+import com.heima.takeout35.utils.Constants;
+import com.heima.takeout35.utils.TakeoutApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,33 +85,77 @@ public class CartRvAdapter extends RecyclerView.Adapter {
 
         @OnClick({R.id.ib_add,R.id.ib_minus})
         public void Onclick(View view){
+            boolean isAdd = false;
             switch (view.getId()){
                 case R.id.ib_add:
+                    isAdd = true;
                     doAddOperation();
                     break;
                 case R.id.ib_minus:
                     doMinusOperation();
                     break;
             }
+
+            //2.改变购物栏下方（数量和总价）
+            ((BusinessActivity) mContext).updateCartUi(mGoodsFragment.mGoodsFragmentPresenter.getCartList());
+            //3.刷新左侧列表（红点值）
+            processRedDot(isAdd);
+            //4.刷新右侧列表（数量）
+            mGoodsFragment.mGoodsAdapter.notifyDataSetChanged();
+        }
+
+        private void doMinusOperation() {
+            //1.改变购物车内部（数量、价格）
+            int count = mGoodsInfo.getCount();
+            count--;
+
+            if(count == 0){
+                //当馒头变成0个的时候，移除馒头条目
+                mCartList.remove(mGoodsInfo);
+                //当最后一类商品被移除（购物车为空的时候），关闭购物车
+                if(mCartList.size() == 0){
+                    //关闭购物车
+                    mActivity.showOrCloseCart();
+                }
+                //删除缓存
+                TakeoutApp.sInstance.deleteCacheSelectedInfo(mGoodsInfo.getId());
+            }else{
+                TakeoutApp.sInstance.updateCacheSelectedInfo(mGoodsInfo.getId(), Constants.MINUS);
+            }
+            mGoodsInfo.setCount(count); //已经在此行更改了数据
+            notifyDataSetChanged();
         }
 
         private void doAddOperation() {
             //1.改变购物车内部（数量、价格）
                 int count = mGoodsInfo.getCount();
                 count++;
-                mGoodsInfo.setCount(count);
+                mGoodsInfo.setCount(count); //已经在此行更改了数据
                 notifyDataSetChanged();
-            //2.改变购物栏下方（数量和总价）
-            ((BusinessActivity) mContext).updateCartUi(mGoodsFragment.mGoodsFragmentPresenter.getCartList());
-            //3.刷新左侧列表（红点值）
 
-            //4.刷新右侧列表（数量）
-
+            //5.购物车中数量至少为1，所以增加的时候都是更新
+            TakeoutApp.sInstance.updateCacheSelectedInfo(mGoodsInfo.getId(), Constants.ADD);
         }
 
-        private void doMinusOperation() {
-
+        private void processRedDot(boolean isAdd) {
+            //点击增加或者减少馒头
+            int typeId = mGoodsInfo.getTypeId(); //粗粮主食
+            //2.根据粗粮主食id找到它的排序position
+            int position = mGoodsFragment.mGoodsFragmentPresenter.getTypePositionByTypeId(typeId);
+            //3.从左侧列表中找到第postion个GoodstypeInfo
+            GoodsTypeInfo goodsTypeInfo = mGoodsFragment.mGoodsFragmentPresenter.mGoodsTypeInfoList.get(position);
+            int redDotCount = goodsTypeInfo.getCount();
+            if(isAdd){
+                redDotCount++;
+            }else{
+                redDotCount --;
+            }
+            goodsTypeInfo.setCount(redDotCount);
+            //4.刷新左侧列表
+            mGoodsFragment.mGoodsTypeRvAdapter.notifyDataSetChanged();
         }
+
+
 
         ViewHolder(View view) {
             super(view);

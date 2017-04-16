@@ -1,5 +1,7 @@
 package com.heima.takeout35.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.heima.takeout35.R;
 import com.heima.takeout35.model.net.GoodsInfo;
+import com.heima.takeout35.model.net.GoodsTypeInfo;
 import com.heima.takeout35.model.net.Seller;
 import com.heima.takeout35.ui.adapter.BusinessFragmentPagerAdapter;
 import com.heima.takeout35.ui.adapter.CartRvAdapter;
@@ -27,6 +30,7 @@ import com.heima.takeout35.ui.fragment.CommentsFragment;
 import com.heima.takeout35.ui.fragment.GoodsFragment;
 import com.heima.takeout35.ui.fragment.SellerFragment;
 import com.heima.takeout35.utils.PriceFormater;
+import com.heima.takeout35.utils.TakeoutApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +81,7 @@ public class BusinessActivity extends AppCompatActivity {
     private View bottomSheetView;
     private RecyclerView mRvCart;
     private CartRvAdapter mCartRvAdapter;
+    public boolean mHasCacheSelectInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +97,7 @@ public class BusinessActivity extends AppCompatActivity {
             mSeller = (Seller) getIntent().getSerializableExtra("seller");
             mTvDeliveryFee.setText("另需配送费￥" + mSeller.getDeliveryFee());
             mTvSendPrice.setText("￥" + mSeller.getSendPrice() + "元起送");
+            mHasCacheSelectInfo = getIntent().getBooleanExtra("hasCacheSelectInfo", false);
         }
     }
 
@@ -120,16 +126,23 @@ public class BusinessActivity extends AppCompatActivity {
 
             case R.id.bottom:
                 //点击底部按钮
-                showCart();
+                showOrCloseCart();
                 break;
         }
     }
 
-    private void showCart() {
+    public void showOrCloseCart() {
             if (bottomSheetView == null) {
                 //加载要显示的布局
                 bottomSheetView = LayoutInflater.from(this).inflate(R.layout.cart_list, (ViewGroup) getWindow().getDecorView(), false);
                 mRvCart = (RecyclerView) bottomSheetView.findViewById(R.id.rvCart);
+                TextView tvClear = (TextView) bottomSheetView.findViewById(R.id.tvClear);
+                tvClear.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        clearCart();
+                    }
+                });
                 mRvCart.setHasFixedSize(true);
                 mRvCart.setLayoutManager(new LinearLayoutManager(this));
                 mCartRvAdapter = new CartRvAdapter(this);
@@ -143,9 +156,71 @@ public class BusinessActivity extends AppCompatActivity {
                 //显示BottomSheetLayout里面的内容
                 //要给mCartRvAdapter设置数据
                 GoodsFragment goodsFragment = (GoodsFragment) mFragmentList.get(0);
-                mCartRvAdapter.setCartList(goodsFragment.mGoodsFragmentPresenter.getCartList());
-                mBottomSheetLayout.showWithSheetView(bottomSheetView);
+                List<GoodsInfo> cartList = goodsFragment.mGoodsFragmentPresenter.getCartList();
+                if(cartList!=null && cartList.size() > 0) {
+                    mCartRvAdapter.setCartList(cartList);
+                    mBottomSheetLayout.showWithSheetView(bottomSheetView);
+                }
             }
+    }
+//
+//    private void processRedDot(boolean isAdd) {
+//        //点击增加或者减少馒头
+//        int typeId = mGoodsInfo.getTypeId(); //粗粮主食
+//        //2.根据粗粮主食id找到它的排序position
+//        int position = mGoodsFragment.mGoodsFragmentPresenter.getTypePositionByTypeId(typeId);
+//        //3.从左侧列表中找到第postion个GoodstypeInfo
+//        GoodsTypeInfo goodsTypeInfo = mGoodsFragment.mGoodsFragmentPresenter.mGoodsTypeInfoList.get(position);
+//        int redDotCount = goodsTypeInfo.getCount();
+//        if(isAdd){
+//            redDotCount++;
+//        }else{
+//            redDotCount --;
+//        }
+//        goodsTypeInfo.setCount(redDotCount);
+//        //4.刷新左侧列表
+//        mGoodsFragment.mGoodsTypeRvAdapter.notifyDataSetChanged();
+//    }
+
+    private void clearCart() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("确认不吃了么？");
+        builder.setPositiveButton("是，我要减肥", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GoodsFragment goodsFragment = (GoodsFragment) mFragmentList.get(0);
+                goodsFragment.mGoodsFragmentPresenter.clearCart();
+                //分别刷新 购物车内部、左右侧列表、下方购物栏
+                mCartRvAdapter.notifyDataSetChanged();
+
+                //TODO:左侧红点值需要手动清空（计算出来的)
+                //循环左侧列表，清空全部类别的红点数
+                List<GoodsTypeInfo> goodsTypeInfoList = goodsFragment.mGoodsTypeRvAdapter.getGoodsTypeInfoList();
+                if(goodsTypeInfoList!=null && goodsTypeInfoList.size()>0){
+                    for(GoodsTypeInfo goodsTypeInfo : goodsTypeInfoList){
+                        goodsTypeInfo.setCount(0);
+                    }
+                }
+                goodsFragment.mGoodsTypeRvAdapter.notifyDataSetChanged();
+
+                goodsFragment.mGoodsAdapter.notifyDataSetChanged();
+
+                updateCartUi(goodsFragment.mGoodsFragmentPresenter.getCartList());
+
+                //关闭购物车
+                showOrCloseCart();
+
+                //清空所有缓存
+                TakeoutApp.sInstance.clearCacheSelectedInfo((int) mSeller.getId());
+            }
+        });
+        builder.setNegativeButton("不，还要吃", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     public void addImageButton(ImageButton ib, int width, int height) {

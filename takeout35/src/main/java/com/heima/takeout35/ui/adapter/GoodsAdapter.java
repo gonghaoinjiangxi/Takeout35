@@ -19,11 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.heima.takeout35.R;
+import com.heima.takeout35.model.dao.CacheSelectedInfo;
 import com.heima.takeout35.model.net.GoodsInfo;
 import com.heima.takeout35.model.net.GoodsTypeInfo;
 import com.heima.takeout35.ui.activity.BusinessActivity;
 import com.heima.takeout35.ui.fragment.GoodsFragment;
+import com.heima.takeout35.utils.Constants;
 import com.heima.takeout35.utils.PriceFormater;
+import com.heima.takeout35.utils.TakeoutApp;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -184,11 +187,11 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
 
                 mTvCount.startAnimation(hideAnimation);
                 mIbMinus.startAnimation(hideAnimation);
-
-
+                //5.删除缓存
+                TakeoutApp.sInstance.deleteCacheSelectedInfo(mGoodsInfo.getId());
             }else{
-                //只改变数量
-
+                //只改变数量，更新
+                TakeoutApp.sInstance.updateCacheSelectedInfo(mGoodsInfo.getId(), Constants.MINUS);
             }
 
             count --;
@@ -207,9 +210,13 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
 
                 mTvCount.startAnimation(animationSet);
                 mIbMinus.startAnimation(animationSet);
-            }else{
-                //只改变数量
 
+                //5.新增缓存
+                TakeoutApp.sInstance.addCacheSelectedInfo(new CacheSelectedInfo(
+                        mGoodsInfo.getSellerId(),mGoodsInfo.getTypeId(),mGoodsInfo.getId(),1));
+            }else{
+                //只改变数量，更新缓存
+                TakeoutApp.sInstance.updateCacheSelectedInfo(mGoodsInfo.getId(), Constants.ADD);
             }
 
             count ++;
@@ -245,8 +252,8 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
             AnimationSet animationSet = new AnimationSet(false);
             animationSet.setDuration(SHOW_DURATION);
             TranslateAnimation translateX = new TranslateAnimation(
-                    Animation.ABSOLUTE, srcLocation[0],
-                    Animation.ABSOLUTE, destLocation[0],
+                    Animation.ABSOLUTE, 0,
+                    Animation.ABSOLUTE, destLocation[0] - srcLocation[0],
                     Animation.ABSOLUTE, 0,
                     Animation.ABSOLUTE, 0
             );
@@ -256,8 +263,8 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
             TranslateAnimation translateY = new TranslateAnimation(
                     Animation.ABSOLUTE, 0,
                     Animation.ABSOLUTE, 0,
-                    Animation.ABSOLUTE, srcLocation[1],
-                    Animation.ABSOLUTE, destLocation[1]
+                    Animation.ABSOLUTE, 0,
+                    Animation.ABSOLUTE, destLocation[1] - srcLocation[1]
             );
             translateY.setInterpolator(new AccelerateInterpolator());
             translateY.setDuration(SHOW_DURATION);

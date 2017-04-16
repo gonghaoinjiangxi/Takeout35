@@ -11,4 +11,6 @@ public class Constants {
     public static final String ORDER = HOST + "order";
     public static final String BUSINESS = "business";
 
+    public static final int  ADD = 1;
+    public static final int MINUS = -1;
 }

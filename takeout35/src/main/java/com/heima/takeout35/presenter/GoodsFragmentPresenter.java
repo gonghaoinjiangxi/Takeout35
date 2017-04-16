@@ -8,7 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import com.heima.takeout35.model.net.GoodsInfo;
 import com.heima.takeout35.model.net.GoodsTypeInfo;
 import com.heima.takeout35.model.net.ResponseInfo;
+import com.heima.takeout35.ui.activity.BusinessActivity;
 import com.heima.takeout35.ui.fragment.GoodsFragment;
+import com.heima.takeout35.utils.TakeoutApp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+
+import static com.heima.takeout35.utils.TakeoutApp.sInstance;
 
 /**
  * 请求商品详情页数据
@@ -40,6 +44,8 @@ public class GoodsFragmentPresenter extends BasePresenter {
 
     @Override
     protected void parserJson(String json) {
+//        mHasCacheSelectInfo = true，点过餐，对数量进行赋值
+        boolean hasInfo = ((BusinessActivity) mGoodsFragment.getActivity()).mHasCacheSelectInfo;
         mAllTypeGoodsList = new ArrayList<>();
         Gson gson = new Gson();
         try {
@@ -53,9 +59,21 @@ public class GoodsFragmentPresenter extends BasePresenter {
             //TODO:商品数据需要从每一个类别中取出，再拼装
             for(int i = 0; i< mGoodsTypeInfoList.size(); i++){
                 GoodsTypeInfo goodsTypeInfo = mGoodsTypeInfoList.get(i);
+                //查找当前类别有多少个已点商品
+                int aTypeCount = 0;
+                if(hasInfo){
+                    //这家店有已点的
+                    aTypeCount = sInstance.queryCacheSelectedInfoByTypeId(goodsTypeInfo.getId());
+                    goodsTypeInfo.setCount(aTypeCount);
+                }
                 List<GoodsInfo> aTypeGoodsList = goodsTypeInfo.getList(); //一个类别的商品
                 for(int j=0;j<aTypeGoodsList.size();j++){
                     GoodsInfo goodsInfo = aTypeGoodsList.get(j);
+                    if(aTypeCount >0){
+                        //当前类别有已点的餐，再查询馒头个数
+                        int count = TakeoutApp.sInstance.queryCacheSelectedInfoByGoodsId(goodsInfo.getId()); //
+                        goodsInfo.setCount(count);
+                    }
                     goodsInfo.setTypeId(goodsTypeInfo.getId());
                     goodsInfo.setTypeName(goodsTypeInfo.getName());
                 }
@@ -89,6 +107,8 @@ public class GoodsFragmentPresenter extends BasePresenter {
                 }
             });
 
+            //更新购物车UI，让购物栏底部页刷新出来
+            ((BusinessActivity) mGoodsFragment.getActivity()).updateCartUi(getCartList());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -136,10 +156,20 @@ public class GoodsFragmentPresenter extends BasePresenter {
         for(int j=0;j < mAllTypeGoodsList.size();j++){
             GoodsInfo goodsInfo = mAllTypeGoodsList.get(j);
             if(goodsInfo.getCount()>0){
+                //数量大于0
                 cartList.add(goodsInfo);
             }
         }
 
         return cartList;
+    }
+
+    public void clearCart() {
+        List<GoodsInfo> cartList = getCartList();
+        if(cartList!=null && cartList.size()>0){
+            for(GoodsInfo goodsInfo : cartList){
+                goodsInfo.setCount(0);
+            }
+        }
     }
 }
