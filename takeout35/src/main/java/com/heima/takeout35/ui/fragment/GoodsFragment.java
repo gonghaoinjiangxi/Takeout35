@@ -42,7 +42,7 @@ public class GoodsFragment extends Fragment {
         mGoodsTypeRvAdapter = new GoodsTypeRvAdapter(getContext(),this);
         mRvGoodsType.setAdapter(mGoodsTypeRvAdapter);
         //右侧设置adapter
-        mGoodsAdapter = new GoodsAdapter(getContext());
+        mGoodsAdapter = new GoodsAdapter(getContext(), this);
         mSlhlv.setAdapter(mGoodsAdapter);
 
         return rootView;

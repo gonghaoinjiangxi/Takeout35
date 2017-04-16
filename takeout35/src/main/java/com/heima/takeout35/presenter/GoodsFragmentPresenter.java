@@ -1,6 +1,7 @@
 package com.heima.takeout35.presenter;
 
 import android.util.Log;
+import android.widget.AbsListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,6 +26,7 @@ public class GoodsFragmentPresenter extends BasePresenter {
 
     private GoodsFragment mGoodsFragment;
     private List<GoodsInfo> mAllTypeGoodsList;
+    public List<GoodsTypeInfo> mGoodsTypeInfoList;
 
     public GoodsFragmentPresenter(GoodsFragment goodsFragment) {
         this.mGoodsFragment = goodsFragment;
@@ -43,14 +45,14 @@ public class GoodsFragmentPresenter extends BasePresenter {
         try {
             JSONObject jsonObj = new JSONObject(json);
             String typeListStr = jsonObj.getString("list");
-            List<GoodsTypeInfo> goodsTypeInfoList = gson.fromJson(typeListStr, new TypeToken<List<GoodsTypeInfo>>(){}.getType());
-            Log.e("business", "一共有" + goodsTypeInfoList.size() + "种商品类别");
+            mGoodsTypeInfoList = gson.fromJson(typeListStr, new TypeToken<List<GoodsTypeInfo>>(){}.getType());
+            Log.e("business", "一共有" + mGoodsTypeInfoList.size() + "种商品类别");
 
-            mGoodsFragment.mGoodsTypeRvAdapter.setGoodsTypeInfoList(goodsTypeInfoList);
+            mGoodsFragment.mGoodsTypeRvAdapter.setGoodsTypeInfoList(mGoodsTypeInfoList);
             //右侧adapter刷新数据,
             //TODO:商品数据需要从每一个类别中取出，再拼装
-            for(int i=0;i< goodsTypeInfoList.size();i++){
-                GoodsTypeInfo goodsTypeInfo = goodsTypeInfoList.get(i);
+            for(int i = 0; i< mGoodsTypeInfoList.size(); i++){
+                GoodsTypeInfo goodsTypeInfo = mGoodsTypeInfoList.get(i);
                 List<GoodsInfo> aTypeGoodsList = goodsTypeInfo.getList(); //一个类别的商品
                 for(int j=0;j<aTypeGoodsList.size();j++){
                     GoodsInfo goodsInfo = aTypeGoodsList.get(j);
@@ -61,9 +63,52 @@ public class GoodsFragmentPresenter extends BasePresenter {
             }
 
             mGoodsFragment.mGoodsAdapter.setGoodsInfoList(mAllTypeGoodsList);
+
+            //拿到所有商品后，监听右侧列表滚动事件
+            mGoodsFragment.mSlhlv.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    //1.监听滚动事件，firstVisibleItem是指第一个可见的条目，
+
+                    //2.切换的时机：新的类别顶掉旧的类别，变成firstVisibleItem
+                    int oldIndex = mGoodsFragment.mGoodsTypeRvAdapter.selectIndex;
+                    int oldTypeId = mGoodsTypeInfoList.get(oldIndex).getId();
+
+                    int newTypeId = mAllTypeGoodsList.get(firstVisibleItem).getTypeId();
+                    if(newTypeId != oldTypeId){
+                        //3.切换到新的index,根据用心营养套餐的typeid算出来index
+                        int newIndex = getTypePositionByTypeId(newTypeId);
+                        mGoodsFragment.mGoodsTypeRvAdapter.selectIndex = newIndex;
+                        mGoodsFragment.mGoodsTypeRvAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 根据用心营养套餐的typeId计算出position
+     * @param typeId
+     * @return
+     */
+    public int getTypePositionByTypeId(int typeId){
+        int position =-1;
+        for(int i=0;i<mGoodsTypeInfoList.size();i++){
+            GoodsTypeInfo goodsTypeInfo = mGoodsTypeInfoList.get(i);
+            if(goodsTypeInfo.getId() == typeId){
+                position = i;
+                break;
+            }
+        }
+        return position;
     }
 
     /**
@@ -79,5 +124,22 @@ public class GoodsFragmentPresenter extends BasePresenter {
             }
         }
         return position;
+    }
+
+    /**
+     * 筛选购物车商品的业务
+     * @return
+     */
+    public List<GoodsInfo> getCartList(){
+        List<GoodsInfo> cartList = new ArrayList<>();
+
+        for(int j=0;j < mAllTypeGoodsList.size();j++){
+            GoodsInfo goodsInfo = mAllTypeGoodsList.get(j);
+            if(goodsInfo.getCount()>0){
+                cartList.add(goodsInfo);
+            }
+        }
+
+        return cartList;
     }
 }
