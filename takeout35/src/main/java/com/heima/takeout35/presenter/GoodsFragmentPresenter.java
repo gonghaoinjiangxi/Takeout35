@@ -136,10 +136,20 @@ public class GoodsFragmentPresenter extends BasePresenter {
         for(int j=0;j < mAllTypeGoodsList.size();j++){
             GoodsInfo goodsInfo = mAllTypeGoodsList.get(j);
             if(goodsInfo.getCount()>0){
+                //数量大于0
                 cartList.add(goodsInfo);
             }
         }
 
         return cartList;
+    }
+
+    public void clearCart() {
+        List<GoodsInfo> cartList = getCartList();
+        if(cartList!=null && cartList.size()>0){
+            for(GoodsInfo goodsInfo : cartList){
+                goodsInfo.setCount(0);
+            }
+        }
     }
 }

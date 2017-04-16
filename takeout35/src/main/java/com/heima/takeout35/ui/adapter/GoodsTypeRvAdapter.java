@@ -34,6 +34,10 @@ public class GoodsTypeRvAdapter extends RecyclerView.Adapter {
 
     private List<GoodsTypeInfo> mGoodsTypeInfoList = new ArrayList<>();
 
+    public List<GoodsTypeInfo> getGoodsTypeInfoList() {
+        return mGoodsTypeInfoList;
+    }
+
     public void setGoodsTypeInfoList(List<GoodsTypeInfo> goodsTypeInfoList) {
         mGoodsTypeInfoList = goodsTypeInfoList;
         notifyDataSetChanged();

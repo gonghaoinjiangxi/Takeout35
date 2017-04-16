@@ -245,8 +245,8 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
             AnimationSet animationSet = new AnimationSet(false);
             animationSet.setDuration(SHOW_DURATION);
             TranslateAnimation translateX = new TranslateAnimation(
-                    Animation.ABSOLUTE, srcLocation[0],
-                    Animation.ABSOLUTE, destLocation[0],
+                    Animation.ABSOLUTE, 0,
+                    Animation.ABSOLUTE, destLocation[0] - srcLocation[0],
                     Animation.ABSOLUTE, 0,
                     Animation.ABSOLUTE, 0
             );
@@ -256,8 +256,8 @@ public class GoodsAdapter extends BaseAdapter implements StickyListHeadersAdapte
             TranslateAnimation translateY = new TranslateAnimation(
                     Animation.ABSOLUTE, 0,
                     Animation.ABSOLUTE, 0,
-                    Animation.ABSOLUTE, srcLocation[1],
-                    Animation.ABSOLUTE, destLocation[1]
+                    Animation.ABSOLUTE, 0,
+                    Animation.ABSOLUTE, destLocation[1] - srcLocation[1]
             );
             translateY.setInterpolator(new AccelerateInterpolator());
             translateY.setDuration(SHOW_DURATION);
