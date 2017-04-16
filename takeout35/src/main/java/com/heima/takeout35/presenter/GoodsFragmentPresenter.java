@@ -26,7 +26,7 @@ public class GoodsFragmentPresenter extends BasePresenter {
 
     private GoodsFragment mGoodsFragment;
     private List<GoodsInfo> mAllTypeGoodsList;
-    private List<GoodsTypeInfo> mGoodsTypeInfoList;
+    public List<GoodsTypeInfo> mGoodsTypeInfoList;
 
     public GoodsFragmentPresenter(GoodsFragment goodsFragment) {
         this.mGoodsFragment = goodsFragment;
@@ -124,5 +124,22 @@ public class GoodsFragmentPresenter extends BasePresenter {
             }
         }
         return position;
+    }
+
+    /**
+     * 筛选购物车商品的业务
+     * @return
+     */
+    public List<GoodsInfo> getCartList(){
+        List<GoodsInfo> cartList = new ArrayList<>();
+
+        for(int j=0;j < mAllTypeGoodsList.size();j++){
+            GoodsInfo goodsInfo = mAllTypeGoodsList.get(j);
+            if(goodsInfo.getCount()>0){
+                cartList.add(goodsInfo);
+            }
+        }
+
+        return cartList;
     }
 }

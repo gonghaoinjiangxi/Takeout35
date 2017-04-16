@@ -102,8 +102,15 @@ public class GoodsTypeRvAdapter extends RecyclerView.Adapter {
                 mType.setTextColor(Color.GRAY);
                 mType.setTypeface(Typeface.DEFAULT);
             }
-            //TODO:问服务器开发人员
-//            mTvCount.setText(goodsTypeInfo.get);
+
+            if(goodsTypeInfo.getCount()>0) {
+                mTvCount.setVisibility(View.VISIBLE);
+            }else{
+                mTvCount.setVisibility(View.GONE);
+            }
+
+            mTvCount.setText(goodsTypeInfo.getCount() + "");
+
 
             mType.setText(goodsTypeInfo.getName());
         }

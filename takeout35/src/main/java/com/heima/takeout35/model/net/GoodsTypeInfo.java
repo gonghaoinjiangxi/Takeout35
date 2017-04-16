@@ -7,6 +7,16 @@ public class GoodsTypeInfo {
     String name;//商品类型名称
     String info;//特价信息
     List<GoodsInfo> list;//商品列表
+	int count; //红点，代表当前类别点选了多少个商品
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public GoodsTypeInfo() {
 		super();
 	}
