@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/marker" android:title="标注"/>
+    <item android:id="@+id/unmarker" android:title="取消标注"/>
+</menu>
