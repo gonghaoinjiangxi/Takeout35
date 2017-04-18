@@ -14,7 +14,6 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
-import static com.baidu.location.b.g.R;
 
 public class BaseMapActivity extends AppCompatActivity implements BaiduMap.OnMapStatusChangeListener {
 

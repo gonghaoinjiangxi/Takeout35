@@ -1,15 +1,11 @@
 package com.heima.baidumap35;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.GroundOverlayOptions;
 import com.baidu.mapapi.map.Overlay;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.model.LatLngBounds;
 
 /**
  * Created by lidongzhi on 2017/4/18.
@@ -52,9 +48,9 @@ public class RectActivity extends BaseMapActivity{
     private void marker() {
         GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions();
         //只需要知道两个点,两个点确定矩形的边界（四条边）
-        groundOverlayOptions.positionFromBounds(new LatLngBounds());
+//        groundOverlayOptions.positionFromBounds(new LatLngBounds());
 
-        mOverlay = mBaiduMap.addOverlay(circleOptions);
+        mOverlay = mBaiduMap.addOverlay(groundOverlayOptions);
 
     }
 }
