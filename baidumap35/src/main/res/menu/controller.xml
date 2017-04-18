@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="放大" android:id="@+id/zoomin" ></item>
+    <item android:title="缩小" android:id="@+id/zoomout" ></item>
+    <item android:title="旋转" android:id="@+id/rotate" ></item>
+    <item android:title="平移" android:id="@+id/translate" ></item>
+</menu>

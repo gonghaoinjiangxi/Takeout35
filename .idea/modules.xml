@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Takeout35.iml" filepath="$PROJECT_DIR$/Takeout35.iml" />
+      <module fileurl="file://$PROJECT_DIR$/badidumapdemo/badidumapdemo.iml" filepath="$PROJECT_DIR$/badidumapdemo/badidumapdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baidumap35/baidumap35.iml" filepath="$PROJECT_DIR$/baidumap35/baidumap35.iml" />
       <module fileurl="file://$PROJECT_DIR$/mvp/mvp.iml" filepath="$PROJECT_DIR$/mvp/mvp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payDemoActivity_20/payDemoActivity_20.iml" filepath="$PROJECT_DIR$/payDemoActivity_20/payDemoActivity_20.iml" />
       <module fileurl="file://$PROJECT_DIR$/takeout35/takeout35.iml" filepath="$PROJECT_DIR$/takeout35/takeout35.iml" />
     </modules>
   </component>

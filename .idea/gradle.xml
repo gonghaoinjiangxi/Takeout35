@@ -9,7 +9,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/badidumapdemo" />
+            <option value="$PROJECT_DIR$/baidumap35" />
             <option value="$PROJECT_DIR$/mvp" />
+            <option value="$PROJECT_DIR$/payDemoActivity_20" />
             <option value="$PROJECT_DIR$/takeout35" />
           </set>
         </option>

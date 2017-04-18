@@ -1,1 +1,2 @@
-include ':takeout35', ':mvp'
+include ':takeout35', ':mvp', ':badidumapdemo', ':baidumap35'
+include ':payDemoActivity_20'

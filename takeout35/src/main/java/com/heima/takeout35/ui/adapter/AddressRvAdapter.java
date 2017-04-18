@@ -1,5 +1,6 @@
 package com.heima.takeout35.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by lidongzhi on 2017/4/16.
@@ -75,16 +77,25 @@ public class AddressRvAdapter extends RecyclerView.Adapter {
         ImageView mIvEdit;
         private RecepitAddress mAddress;
 
+        @OnClick({R.id.iv_edit})
+        public void editAddress(View view){
+            Intent intent = new Intent(mContext, AddOrEditAddressActivity.class);
+            //修改地址，所以要带历史资料
+            intent.putExtra("address", mAddress);
+            mContext.startActivity(intent);
+        }
+
         ViewHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, AddOrEditAddressActivity.class);
-                    //修改地址，所以要带历史资料
-                    intent.putExtra("address", mAddress);
-                    mContext.startActivity(intent);
+                   //把地址返回给确认订单
+                    Intent data = new Intent();
+                    data.putExtra("address", mAddress);
+                    ((Activity) mContext).setResult(200,data);
+                    ((Activity) mContext).finish();
                 }
             });
         }

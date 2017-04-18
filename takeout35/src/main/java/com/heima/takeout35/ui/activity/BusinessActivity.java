@@ -2,6 +2,7 @@ package com.heima.takeout35.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -32,6 +33,7 @@ import com.heima.takeout35.ui.fragment.SellerFragment;
 import com.heima.takeout35.utils.PriceFormater;
 import com.heima.takeout35.utils.TakeoutApp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,6 +124,13 @@ public class BusinessActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.tvSubmit:
+                //提交订单
+                Intent intent = new Intent(this,ConfirmOrderActivity.class);
+                //商家名字，购物车所有商品
+                intent.putExtra("seller", mSeller);
+                GoodsFragment goodsFragment = (GoodsFragment) mFragmentList.get(0);
+                intent.putExtra("cartList", (Serializable) goodsFragment.mGoodsFragmentPresenter.getCartList());
+                startActivity(intent);
                 break;
 
             case R.id.bottom:
