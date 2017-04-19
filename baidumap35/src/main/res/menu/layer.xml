@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="普通地图" android:id="@+id/type_normal"/>
+    <item android:title="空白地图" android:id="@+id/type_blank"/>
+    <item android:title="卫星地图" android:id="@+id/type_satelite"/>
+    <item android:title="交通图" android:id="@+id/type_traffic"/>
+    <item android:title="关闭交通图" android:id="@+id/type_close_traffic"/>
+</menu>

@@ -15,8 +15,9 @@ import android.widget.ListView;
 public class MainActivity extends Activity implements AdapterView.OnItemClickListener {
 
     private ListView mListView;
-    String[] mTitles = new String[]{"地图控制","标注覆盖物","圆形覆盖物","矩形覆盖物"};
-    Class[] mClasses = new Class[]{BaseMapActivity.class,OverLayerActivity.class,CircleActivity.class,RectActivity.class};
+    String[] mTitles = new String[]{"地图控制","标注覆盖物","圆形覆盖物","矩形覆盖物","地图类型","兴趣点搜索","线路规划","定位"};
+    Class[] mClasses = new Class[]{BaseMapActivity.class,OverLayerActivity.class,
+            CircleActivity.class,RectActivity.class,MapTypeActivity.class,POIActivity.class,RouteActivity.class,LocationActivity.class};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

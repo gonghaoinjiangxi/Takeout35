@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="android-support-v13">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/payDemoActivity_20/libs/android-support-v13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/alipay_demo/libs/android-support-v13.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

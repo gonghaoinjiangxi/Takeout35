@@ -2,6 +2,7 @@ package com.heima.takeout35.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -70,6 +71,8 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
     ImageView mIbSelectLabel;
     @InjectView(R.id.bt_ok)
     Button mBtOk;
+    @InjectView(R.id.btn_map_location)
+    Button mBtnMapLocation;
     private AddressDao mAddressDao;
     private RecepitAddress mAddress;
 
@@ -84,7 +87,7 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
         mEtPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     //有焦点
 
                 }
@@ -104,9 +107,9 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(TextUtils.isEmpty(s)){
+                if (TextUtils.isEmpty(s)) {
                     mIbDeletePhone.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     mIbDeletePhone.setVisibility(View.VISIBLE);
                 }
             }
@@ -125,9 +128,9 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(TextUtils.isEmpty(s)){
+                if (TextUtils.isEmpty(s)) {
                     mIbDeletePhoneOther.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     mIbDeletePhoneOther.setVisibility(View.VISIBLE);
                 }
             }
@@ -135,9 +138,9 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
     }
 
     private void processIntent() {
-        if(getIntent()!=null){
+        if (getIntent() != null) {
             mAddress = (RecepitAddress) getIntent().getSerializableExtra("address");
-            if(mAddress!=null){
+            if (mAddress != null) {
                 //展示删除按钮
                 mIbDelete.setVisibility(View.VISIBLE);
                 mIbDelete.setOnClickListener(new View.OnClickListener() {
@@ -150,9 +153,9 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
                 mTvTitle.setText("修改地址");
                 mEtName.setText(mAddress.getName());
                 String sex = mAddress.getSex();
-                if("先生".equals(sex)){
+                if ("先生".equals(sex)) {
                     mRbMan.setChecked(true);
-                }else{
+                } else {
                     mRbWomen.setChecked(true);
                 }
                 mEtPhone.setText(mAddress.getPhone());
@@ -171,10 +174,10 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 boolean isOk = mAddressDao.deleteAddress(mAddress);
-                if(isOk){
+                if (isOk) {
                     Toast.makeText(AddOrEditAddressActivity.this, "删除地址成功", Toast.LENGTH_SHORT).show();
                     finish();
-                }else{
+                } else {
                     Toast.makeText(AddOrEditAddressActivity.this, "删除地址失败", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -189,9 +192,14 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.ib_back, R.id.ib_delete, R.id.ib_delete_phone, R.id.ib_add_phone_other, R.id.ib_delete_phone_other, R.id.ib_select_label, R.id.bt_ok})
+    @OnClick({R.id.btn_map_location,R.id.ib_back, R.id.ib_delete, R.id.ib_delete_phone, R.id.ib_add_phone_other, R.id.ib_delete_phone_other, R.id.ib_select_label, R.id.bt_ok})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btn_map_location:
+                //TODO:地图选择地址
+                Intent intent = new Intent(this, MapLocationActivity.class);
+                startActivity(intent);
+                break;
             case R.id.ib_back:
                 finish();
                 break;
@@ -215,10 +223,10 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
             case R.id.bt_ok:
                 //线校验数据
                 boolean isOk = checkReceiptAddressInfo();
-                if(isOk){
-                    if(mAddress!=null){
+                if (isOk) {
+                    if (mAddress != null) {
                         updateAddress();
-                    }else{
+                    } else {
                         insertAddress();
                     }
                 }
@@ -230,8 +238,8 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
         //更新
         String name = mEtName.getText().toString().trim();
         String sex = "女士";
-        if(mRbMan.isChecked()){
-            sex ="先生";
+        if (mRbMan.isChecked()) {
+            sex = "先生";
         }
         String phone = mEtPhone.getText().toString().trim();
         String phoneOther = mEtPhoneOther.getText().toString().trim();
@@ -247,10 +255,10 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
         mAddress.setDetailAddress(detailAddress);
         mAddress.setLabel(label);
         boolean isUpdateSuccess = mAddressDao.updateAddress(mAddress);
-        if(isUpdateSuccess){
+        if (isUpdateSuccess) {
             finish();
             Toast.makeText(this, "更新地址成功", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             Toast.makeText(this, "更新地址失败", Toast.LENGTH_SHORT).show();
         }
     }
@@ -259,26 +267,27 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
         //保存当前收货地址，sqlite
         String name = mEtName.getText().toString().trim();
         String sex = "女士";
-        if(mRbMan.isChecked()){
-            sex ="先生";
+        if (mRbMan.isChecked()) {
+            sex = "先生";
         }
         String phone = mEtPhone.getText().toString().trim();
         String phoneOther = mEtPhoneOther.getText().toString().trim();
         String address = mEtReceiptAddress.getText().toString().trim();
         String detailAddress = mEtDetailAddress.getText().toString().trim();
         String label = mTvLabel.getText().toString().trim();
-        RecepitAddress recepitAddress = new RecepitAddress(999,name,sex,phone,phoneOther,address,detailAddress,label,"35");
+        RecepitAddress recepitAddress = new RecepitAddress(999, name, sex, phone, phoneOther, address, detailAddress, label, "35");
         boolean isInsertSuccess = mAddressDao.insertAddress(recepitAddress);
-        if(isInsertSuccess){
+        if (isInsertSuccess) {
             finish();
             Toast.makeText(this, "新增地址成功", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             Toast.makeText(this, "新增地址失败", Toast.LENGTH_SHORT).show();
         }
     }
 
     String[] items = new String[]{"无", "家", "学校", "公司"};
-    String[] colors = new String[]{"#ff4567","#eeeeaa","#bb9977","#aa7563"};
+    String[] colors = new String[]{"#ff4567", "#eeeeaa", "#bb9977", "#aa7563"};
+
     private void showSelectLabelDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("选择地址标签");

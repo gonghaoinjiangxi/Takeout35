@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="公交" android:id="@+id/bus"/>
+    <item android:title="驾车" android:id="@+id/drive"/>
+    <item android:title="骑行" android:id="@+id/ride"/>
+    <item android:title="步行" android:id="@+id/walk"/>
+</menu>

@@ -20,7 +20,8 @@ public class BaseMapActivity extends AppCompatActivity implements BaiduMap.OnMap
     protected MapView mMapView;
     protected BaiduMap mBaiduMap;
     LatLng zlswgy = new LatLng(22.581627, 113.929872);
-//    LatLng zlswgy = new LatLng(22.581627, 113.929872);
+    LatLng hybfc = new LatLng(22.565902, 113.912599);
+    LatLng zsgy = new LatLng(22.553727, 113.925328);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

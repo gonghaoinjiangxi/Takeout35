@@ -150,7 +150,7 @@ public class OrderRvAdapter extends RecyclerView.Adapter implements Observer {
                 case OrderObservable.ORDERTYPE_SUBMIT:
                     typeInfo = "已提交订单";
                     break;
-                case OrderObservable.ORDERTYPE_RECEIVEORDER:
+                case OrderObservable.ORDERYPTE_RECEIVEORDER:
                     typeInfo = "商家接单";
                     break;
                 case OrderObservable.ORDERTYPE_DISTRIBUTION:

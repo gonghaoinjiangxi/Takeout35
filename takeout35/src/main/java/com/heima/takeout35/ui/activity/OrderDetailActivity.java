@@ -72,7 +72,7 @@ public class OrderDetailActivity extends AppCompatActivity implements Observer {
 //                typeInfo = "已提交订单";
                 index = 0;
                 break;
-            case OrderObservable.ORDERTYPE_RECEIVEORDER:
+            case OrderObservable.ORDERYPTE_RECEIVEORDER:
 //                typeInfo = "商家接单";
                 index = 1;
                 break;

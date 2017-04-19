@@ -215,6 +215,11 @@
         android:layout_height="40dp"
         android:layout_marginTop="1dp"
         android:background="#fff">
+        <Button
+            android:id="@+id/btn_map_location"
+            android:text="地图定位地址"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Button>
 
         <EditText
             android:id="@+id/et_detail_address"

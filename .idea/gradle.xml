@@ -9,11 +9,14 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/alipay_demo" />
             <option value="$PROJECT_DIR$/badidumapdemo" />
             <option value="$PROJECT_DIR$/baidumap35" />
+            <option value="$PROJECT_DIR$/gaodemapdemo" />
             <option value="$PROJECT_DIR$/mvp" />
             <option value="$PROJECT_DIR$/payDemoActivity_20" />
             <option value="$PROJECT_DIR$/takeout35" />
+            <option value="$PROJECT_DIR$/testmap35" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
