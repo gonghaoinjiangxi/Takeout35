@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Volley">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/takeout35/libs/Volley.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gaodemapdemo/libs/Volley.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

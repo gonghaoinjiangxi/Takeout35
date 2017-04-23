@@ -33,6 +33,7 @@ import butterknife.OnClick;
  * Created by lidongzhi on 2017/4/16.
  */
 public class AddOrEditAddressActivity extends AppCompatActivity {
+    private static final int REQUEST_SELECT_ADDRESS = 1003;
     @InjectView(R.id.ib_back)
     ImageButton mIbBack;
     @InjectView(R.id.tv_title)
@@ -75,6 +76,17 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
     Button mBtnMapLocation;
     private AddressDao mAddressDao;
     private RecepitAddress mAddress;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 200){
+            String title = data.getStringExtra("title");
+            String address = data.getStringExtra("address");
+            mEtReceiptAddress.setText(title);
+            mEtDetailAddress.setText(address);
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -198,7 +210,7 @@ public class AddOrEditAddressActivity extends AppCompatActivity {
             case R.id.btn_map_location:
                 //TODO:地图选择地址
                 Intent intent = new Intent(this, MapLocationActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_SELECT_ADDRESS);
                 break;
             case R.id.ib_back:
                 finish();

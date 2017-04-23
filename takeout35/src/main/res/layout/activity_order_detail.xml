@@ -107,12 +107,12 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <!--&lt;!&ndash;地图控件&ndash;&gt;-->
-            <!--<com.amap.api.maps2d.MapView-->
-                <!--android:id="@+id/map"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="200dp"-->
-                <!--android:visibility="gone"></com.amap.api.maps2d.MapView>-->
+            <!--地图控件-->
+            <com.amap.api.maps2d.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone"></com.amap.api.maps2d.MapView>
 
 
 

@@ -57,6 +57,13 @@ public class MyReceiver extends BroadcastReceiver {
             HashMap<String,String> map = new HashMap<>();
             map.put("orderId", orderId);
             map.put("type", type);
+
+            if(jsonObject.has("lat")){
+               String lat = jsonObject.getString("lat");
+                String lng = jsonObject.getString("lng");
+                map.put("lat", lat);
+                map.put("lng", lng);
+            }
             return map;
         } catch (JSONException e) {
             e.printStackTrace();

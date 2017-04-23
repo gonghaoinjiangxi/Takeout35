@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_marginLeft="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:padding="5dp"
+        android:text="快乐园"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"/>
+
+    <TextView
+        android:padding="5dp"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:text="中粮商务公园2栋103"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_address"/>
+</LinearLayout>
